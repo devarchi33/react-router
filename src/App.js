@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Router, Route, Link, hashHistory} from 'react-router';
+import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router';
 
-const Home = () => <div><h1>Home</h1><Links/></div>
-const About = () => <div><h1>About</h1><Links/></div>
-const Contact = () => <div><h1>Contact</h1><Links/></div>
+const Home = (props) => <div><h1>Home</h1><Links/>{props.children}</div>
+const About = () => <div><h1>About</h1></div>
+const Contact = () => <div><h1>Contact</h1></div>
 
 const Links = () => (
     <nav>
@@ -17,9 +17,10 @@ class App extends Component {
     render() {
         return (
             <Router history = {hashHistory}>
-                <Route path="/" component={Home}/>
-                <Route path="/about" component={About}/>
-                <Route path="/contact" component={Contact}/>
+                <Route path="/" component={Home}>
+                    <IndexRoute path="/about" component={About}/>
+                    <Route path="/contact" component={Contact}/>
+                </Route>
             </Router>
         );
     }
