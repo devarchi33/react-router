@@ -1,24 +1,42 @@
 import React, {Component} from 'react';
 import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router';
 
-const Page = (props) => <div><h1>{props.location.query.message || 'Hello'}</h1><Links/></div>
+class Home extends Component {
+    componentWillMount() {
+        this.context.router.setRouteLeaveHook(
+            this.props.route,
+            this.routerWillLeaveee
+        )
+    }
 
+    routerWillLeaveee( nextLocation ){
+        return `leaving home for ${nextLocation.pathname}`
+    }
+    
+    render() {
+        return (
+            <div><h1>Home</h1><Links/></div>
+        )
+    }
+}
+
+Home.contextTypes = { router: React.PropTypes.object.isRequired }
+
+const About = () => <div><h1>About</h1><Links/></div>
 const Links = () => (
     <nav>
-        <Link to={ { pathname : "/", query : {message : ''} } }>Hello</Link>
-        <Link to={ { pathname : "/", query : {message : 'Yop'} } }>Yop</Link>
+        <Link to="/">Home</Link>
+        <Link to="about">About</Link>
     </nav>
 )
 
-class App extends Component {
-    render () {
-        return (
-            <Router history={hashHistory}>
-                <Route path="/" component={Page}>
-                </Route>
-            </Router>        
-        );
-    }
-}
+const App = () => {
+    return (
+        <Router history={hashHistory}>
+            <Route path="/" component={Home}></Route>
+            <Route path="/about" component={About}></Route>
+        </Router>
+    );
+};
 
 export default App;
